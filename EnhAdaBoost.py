@@ -1,5 +1,23 @@
 from typing import Tuple
+import torch
 from torch import nn
+import numpy as np
+import copy
+
+def one_hot(arr):
+    # determine the number of unique values in the array
+    n_values = len(np.unique(arr))
+    
+    if n_values == 1: # In case all elements were the same, like all 0
+        n_values += 1
+
+    # create an empty one-hot encoded array
+    one_hot = np.zeros((len(arr), n_values), dtype="float32")
+
+    # one-hot encode the array
+    one_hot[np.arange(len(arr)), arr] = 1
+    
+    return one_hot
 
 class EnhAdaBoostNN:
     def __init__(self, max_num_estimators: int, patience: int, max_epochs: int, nn_topology: Tuple, lr: float, beta: float = 0.5):
